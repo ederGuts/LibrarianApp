@@ -24,7 +24,7 @@ import com.infosys.demo.DemoApp.service.BookService;
 public class BookController extends BaseController<Book,BookResponse> {
     
     @GetMapping("/fetch-all")
-    @PreAuthorize("hasAuthority('LIBRARIAN')")
+    @PreAuthorize("hasAnyAuthority('LIBRARIAN','USER')")
     public ResponseEntity<List<BookResponse>> getAll() {
 //        var claim =  jwt.getClaim("authorities");
 //        log.info("Claim " +claim.toString());

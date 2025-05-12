@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.infosys.demo.DemoApp.entity.StatusBook;
+import com.infosys.demo.DemoApp.exception.ResourceFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.infosys.demo.DemoApp.entity.Book;
@@ -50,7 +52,13 @@ public class UserBookServiceImp implements UserBookService {
              })
              .collect(Collectors.toList());
 
-        return this.userBookRepository.saveAll(listUserBook);
+        List<UserBook> list = null;
+        try {
+            list = this.userBookRepository.saveAll(listUserBook);
+        } catch(DataIntegrityViolationException e) {
+            throw new ResourceFoundException("Book already borrowed");
+        }
+        return list;
     }
 
     @Override
